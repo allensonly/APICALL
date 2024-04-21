@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countries</title>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="text-center m-5">
+        <h1 class="text-warning m-5">Know more about Countries</h1>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="border border-warning p-4 w-100 d-flex justify-content-center">
+                    <input id="cName" placeholder="Search any country" type="text" class="form-control shadow-none border border-warning">
+                    <button onclick="search()" class="btn btn-warning  ms-3" type="button">Search</button>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+     </div>   
+    <div id="output" class="text-left m-5 d-flex justify-content-center">
+
+    </div>
+        
+    
+
+</body>
+<script>
+    function search() {
+        let country = cName.value
+        console.log(country);
+        //instead of ajax request fetch api is used
+        fetch(`https://restcountries.com/v2/name/${country}?fullText=true`)//asynchronous function call will not have semi colon
+        .then((res)=>{//data is came in promise method
+            res.json()//to convert the data into json formate
+            .then((res1)=>{//to display the result
+                populateData(res1);
+            })
+        })
+        function populateData(res1) {
+           let countryDetails = res1[0]
+           let flag = countryDetails.flag
+           let name = countryDetails.name
+           let capital = countryDetails.capital
+           let region = countryDetails.region
+           let population = countryDetails.population
+           let timezone = countryDetails.timezones
+           let language = countryDetails.languages[0].name
+           let currency = countryDetails.currencies[0].name
+           let symbol = countryDetails.currencies[0].symbol 
+           
+           
+          htmlData =`<div class="card" style="width: 500px;">
+                         <img src="${flag}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                             <h5 class="card-title text-center">${name}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Capital : ${capital}</li>
+                            <li class="list-group-item">Region : ${region}</li>
+                            <li class="list-group-item">Population : ${population}</li>
+                            <li class="list-group-item">Timezone: ${timezone}</li>
+                            <li class="list-group-item">currency: ${symbol},${currency}</li>
+                            <li class="list-group-item">language: ${language}</li>
+
+
+
+                        </ul>
+                        
+                     </div>`
+                     output.innerHTML =  htmlData
+            
+        }
+      
+    }
+
+    
+</script>
+</html>
